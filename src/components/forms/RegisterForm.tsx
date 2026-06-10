@@ -1,7 +1,25 @@
+"use client";
+
 import Button from "../ui/Button";
 import { siteConfig } from "@/constants/site";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function RegisterForm() {
+    const { register, isLoading, error } = useAuth();
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+
+        await register({
+            firstName: String(formData.get("firstName")),
+            lastName: String(formData.get("lastName")),
+            email: String(formData.get("email")),
+            password: String(formData.get("password")),
+            phone: String(formData.get("phone") || ""),
+            role: "CLIENT"
+        });
+    }
     return (
         <section className="w-full max-w-lg rounded-(--radius-xl) border border-(--border) bg-(--surface)/90 p-6 shadow-2xl backdrop-blur">
             <div className="mb-8 text-center">
@@ -21,7 +39,7 @@ export default function RegisterForm() {
                 </p>
             </div>
 
-            <form className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                         <label className="mb-2 block text-sm font-medium text-(--text-soft)">
@@ -60,8 +78,15 @@ export default function RegisterForm() {
                 </div>
 
                 <input type="hidden" name="role" value="CLIENT" />
-                <Button type="submit" className="w-full">
-                    Crear cuenta
+                
+                {error && (
+                    <p className="rounded-xl border border-(--danger) bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                        {error}
+                    </p>
+                )}
+
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? "Creando cuenta..." : "Crear cuenta"}
                 </Button>
             </form>
 
