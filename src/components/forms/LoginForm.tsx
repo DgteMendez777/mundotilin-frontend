@@ -1,8 +1,20 @@
+"use client";
+
 import Button from "../ui/Button";
 import { siteConfig } from "@/constants/site";
+import { useAuth } from "@/hooks/useAuth";
 import { Lock } from "lucide-react";
 
 export default function LoginForm() {
+    const { login, isLoading, error } = useAuth();
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        await login({
+            email: String(formData.get("email")),
+            password: String(formData.get("password"))
+        });
+    }
     return (
         <section className="w-full max-w-md rounded-(--radius-xl) border border-(--border) bg-(--surface)/90 p-6 shadow-2xl backdrop-blur">
             <div className="mb-8 text-center">
@@ -22,19 +34,19 @@ export default function LoginForm() {
                 </p>
             </div>
 
-            <form className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                     <label className="mb-2 block text-sm font-medium text-(--text-soft)">
                         Correo electrónico
                     </label>
-                    <input type="email" placeholder={siteConfig.loginEmail} className="w-full rounded-xl border border-(--border) bg-[#0a0e14] px-4 py-3 text-sm outline-none transition placeholder:text-gray-500 focus:border-(--primary)"/>
+                    <input name="email" required type="email" placeholder={siteConfig.loginEmail} className="w-full rounded-xl border border-(--border) bg-[#0a0e14] px-4 py-3 text-sm outline-none transition placeholder:text-gray-500 focus:border-(--primary)"/>
                 </div>
 
                 <div>
                     <label className="mb-2 block text-sm font-medium text-(--text-soft)">
                         Contraseña
                     </label>
-                    <input type="password" placeholder="••••••••" className="w-full rounded-xl border border-(--border) bg-[#0a0e14] px-4 py-3 text-sm outline-none transition placeholder:text-gray-500 focus:border-(--primary)"/>
+                    <input name="password" required type="password" placeholder="••••••••" className="w-full rounded-xl border border-(--border) bg-[#0a0e14] px-4 py-3 text-sm outline-none transition placeholder:text-gray-500 focus:border-(--primary)"/>
                 </div>
 
                 <div className="flex items-center justify-between text-xs">
@@ -48,8 +60,14 @@ export default function LoginForm() {
                     </a>
                 </div>
 
-                <Button type="submit" className="w-full">
-                    Iniciar sesión
+                {error && (
+                    <p className="rounded-xl border border-(--danger) bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                        {error}
+                    </p>
+                )}
+
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? "Ingresando..." : "Iniciar sesión"}
                 </Button>
             </form>
 
