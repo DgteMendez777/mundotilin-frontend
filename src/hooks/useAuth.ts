@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { authService } from "@/services/auth.service";
 import { LoginPayload, RegisterPayload } from "@/types/auth.types";
+import { routes } from "@/constants/routes";
 
 export function useAuth() {
     const router = useRouter();
@@ -19,7 +20,7 @@ export function useAuth() {
             const data = await authService.login(payload);
             authService.saveSession(data);
 
-            router.push("/");
+            router.push(routes.clown.dashboard);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Error al iniciar sesión");
         } finally {
