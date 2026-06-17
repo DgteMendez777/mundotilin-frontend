@@ -1,6 +1,8 @@
 import StatusBadge from "@/components/ui/StatusBadge";
 import { eventsMock } from "@/data/events";
 import { CalendarDays, MapPin, Search } from "lucide-react";
+import Link from "next/link";
+import { routes } from "@/constants/routes";
 
 export default function EventsPage() {
     return (
@@ -13,9 +15,9 @@ export default function EventsPage() {
                     </p>
                 </div>
 
-                <button className="rounded-xl bg-(--primary) px-4 py-3 text-sm font-semibold transition hover:bg-(--primary-hover)">
+                <Link href={routes.clown.newEvent} className="rounded-xl bg-(--primary) px-4 py-3 text-center text-sm font-semibold transition hover:bg-(--primary-hover)">
                     + Nuevo evento
-                </button>
+                </Link>
             </div>
 
             <div className="rounded-(--radius-xl) border border-(--border) bg-(--surface) p-4">
@@ -43,6 +45,7 @@ export default function EventsPage() {
                                 <th className="px-4 py-3 font-medium">Servicio</th>
                                 <th className="px-4 py-3 font-medium">Ubicación</th>
                                 <th className="px-4 py-3 font-medium">Estado</th>
+                                <th className="px-4 py-3 font-medium">Acciones</th>
                             </tr>
                         </thead>
 
@@ -55,7 +58,12 @@ export default function EventsPage() {
                                     <td className="px-4 py-4 text-(--text-soft)">{event.service}</td>
                                     <td className="px-4 py-4 text-(--text-muted)">{event.location}</td>
                                     <td className="px-4 py-4">
-                                    <StatusBadge status={event.status as "PENDING" | "CONFIRMED" | "FINISHED"} />
+                                        <StatusBadge status={event.status as "PENDING" | "CONFIRMED" | "FINISHED"} />
+                                    </td>
+                                    <td className="">
+                                        <Link href={routes.clown.editEvent(event.id)} className="rounded-lg border border-(--border) px-3 py-2 text-xs font-semibold text-(--text-soft) transition hover:bg-(--surface-hover)">
+                                            Editar
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}
@@ -86,6 +94,9 @@ export default function EventsPage() {
                                     {event.location}
                                 </p>
                             </div>
+                            <Link href={routes.clown.editEvent(event.id)} className="mt-4 block w-full rounded-xl border border-(--border) px-3 py-2 text-center text-sm font-semibold text-(--text-soft) transition hover:bg-(--surface-hover)">
+                                Editar
+                            </Link>
                         </article>
                     ))}
                 </div>

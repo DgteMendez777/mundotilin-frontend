@@ -6,6 +6,8 @@ export const routes = {
     clown: {
         dashboard: "/clown/dashboard",
         events: "/clown/dashboard/events",
+        newEvent: "/clown/dashboard/events/new",
+        editEvent: (eventId: string) => `/clown/dashboard/events/${eventId}/edit`,
         calendar: "/clown/dashboard/calendar",
         services: "/clown/dashboard/services",
         categories: "/clown/dashboard/categories",
