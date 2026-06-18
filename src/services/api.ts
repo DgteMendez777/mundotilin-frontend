@@ -1,9 +1,13 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const token = typeof window !== "undefined"
-        ? localStorage.getItem("accessToken")
-        : null;
+export async function apiFetch<T>(
+    endpoint: string,
+    options: RequestInit = {}
+): Promise<T> {
+    const token =
+        typeof window !== "undefined"
+            ? sessionStorage.getItem("accessToken")
+            : null;
 
     const response = await fetch(`${API_URL}${endpoint}`, {
         ...options,
@@ -13,6 +17,10 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): 
             ...options.headers,
         },
     });
+
+    if (response.status === 401) {
+        sessionStorage.removeItem("accessToken");
+    }
 
     if (!response.ok) {
         const error = await response.json().catch(() => null);
