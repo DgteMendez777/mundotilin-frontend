@@ -1,6 +1,5 @@
 "use client"
 
-import StatusBadge from "@/components/ui/StatusBadge";
 import { CalendarDays, MapPin, Search } from "lucide-react";
 import Link from "next/link";
 import { routes } from "@/constants/routes";
