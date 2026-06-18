@@ -1,4 +1,4 @@
-export type EventStatus = "PENDING" | "CONFIRMED" | "FINISHED"
+export type EventStatus = "PENDING" | "CONFIRMED" | "FINISHED";
 
 export type EventCustomer = {
     id: string;

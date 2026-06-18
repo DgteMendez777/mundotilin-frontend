@@ -7,12 +7,20 @@ import { routes } from "@/constants/routes";
 import { useEvents } from "@/hooks/useEvents";
 import EventStatusSelect from "@/components/events/EventStatusSelect";
 import { EventStatus } from "@/types/event.types";
+import Toast from "@/components/ui/Toast";
+import { useToast } from "@/hooks/useToast";
 
 export default function EventsPage() {
     const { events, isLoading, error, updateEventStatus } = useEvents();
+    const { toast, showToast, hideToast } = useToast();
 
     async function handleStatusChange(eventId: string, status: EventStatus) {
-        await updateEventStatus(eventId, status);
+        try {
+            await updateEventStatus(eventId, status);
+            showToast("success", "Estado del evento actualizado.");
+        } catch {
+            showToast("error", "No se pudo actualizar el estado.");
+        }
     }
 
     return (
@@ -139,6 +147,13 @@ export default function EventsPage() {
                     ))}
                 </div>
             </div>
+            {toast && (
+  <Toast
+    type={toast.type}
+    message={toast.message}
+    onClose={hideToast}
+  />
+)}
         </section>
     );
 }
