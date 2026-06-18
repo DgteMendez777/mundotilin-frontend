@@ -1,10 +1,20 @@
+"use client"
+
 import StatusBadge from "@/components/ui/StatusBadge";
-import { eventsMock } from "@/data/events";
 import { CalendarDays, MapPin, Search } from "lucide-react";
 import Link from "next/link";
 import { routes } from "@/constants/routes";
+import { useEvents } from "@/hooks/useEvents";
+import EventStatusSelect from "@/components/events/EventStatusSelect";
+import { EventStatus } from "@/types/event.types";
 
 export default function EventsPage() {
+    const { events, isLoading, error, updateEventStatus } = useEvents();
+
+    async function handleStatusChange(eventId: string, status: EventStatus) {
+        await updateEventStatus(eventId, status);
+    }
+
     return (
         <section className="space-y-6">
             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
@@ -36,6 +46,17 @@ export default function EventsPage() {
                 </div>
 
                 <div className="hidden overflow-hidden rounded-xl border border-(--border) lg:block">
+                    
+                    {isLoading && (
+                        <p className="rounded-xl border border-(--border) bg-[#0a0e14] px-4 py-3 text-sm text-(--text-muted)">
+                            Cargando eventos...
+                        </p>
+                    )} {error && (
+                        <p className="rounded-xl border border-(--danger) bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                            {error}
+                        </p>
+                    )}
+
                     <table className="w-full border-collapse text-left text-sm">
                         <thead className="bg-(--surface-soft) text-(--text-muted)">
                             <tr>
@@ -50,15 +71,18 @@ export default function EventsPage() {
                         </thead>
 
                         <tbody>
-                            {eventsMock.map((event) => (
+                            {events.map((event) => (
                                 <tr key={event.id} className="border-t border-(--border) transition hover:bg-(--surface-hover)">
-                                    <td className="px-4 py-4">{event.date}</td>
-                                    <td className="px-4 py-4 text-(--text-soft)">{event.time}</td>
-                                    <td className="px-4 py-4 font-medium">{event.client}</td>
-                                    <td className="px-4 py-4 text-(--text-soft)">{event.service}</td>
-                                    <td className="px-4 py-4 text-(--text-muted)">{event.location}</td>
+                                    <td className="px-4 py-4">{event.eventDate}</td>
+                                    <td className="px-4 py-4 text-(--text-soft)">{event.startTime}</td>
+                                    <td className="px-4 py-4 font-medium">{event.customer
+                                        ? `${event.customer.firstName} ${event.customer.lastName}`
+                                        : "Cliente no asignado"
+                                    }</td>
+                                    <td className="px-4 py-4 text-(--text-soft)">{event.service?.name ?? "Servicio no asignado"}</td>
+                                    <td className="px-4 py-4 text-(--text-muted)">{event.address}</td>
                                     <td className="px-4 py-4">
-                                        <StatusBadge status={event.status as "PENDING" | "CONFIRMED" | "FINISHED"} />
+                                        <EventStatusSelect status={event.status} onChange={(status) => handleStatusChange(event.id, status)}/>
                                     </td>
                                     <td className="">
                                         <Link href={routes.clown.editEvent(event.id)} className="rounded-lg border border-(--border) px-3 py-2 text-xs font-semibold text-(--text-soft) transition hover:bg-(--surface-hover)">
@@ -72,26 +96,40 @@ export default function EventsPage() {
                 </div>
 
                 <div className="space-y-3 lg:hidden">
-                    {eventsMock.map((event) => (
+
+                    {isLoading && (
+                        <p className="rounded-xl border border-(--border) bg-[#0a0e14] px-4 py-3 text-sm text-(--text-muted)">
+                            Cargando eventos...
+                        </p>
+                    )} {error && (
+                        <p className="rounded-xl border border-(--danger) bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                            {error}
+                        </p>
+                    )}
+
+                    {events.map((event) => (
                         <article key={event.id} className="rounded-xl border border-(--border) bg-[#0a0e14] p-4">
                             <div className="mb-3 flex items-center justify-between gap-3">
                                 <div>
-                                    <h3 className="font-semibold">{event.service}</h3>
-                                    <p className="text-sm text-(--text-muted)">{event.client}</p>
+                                    <h3 className="font-semibold">{event.service?.name ?? "Servicio no asignado"}</h3>
+                                    <p className="text-sm text-(--text-muted)">{event.customer
+                                        ? `${event.customer.firstName} ${event.customer.lastName}`
+                                        : "Cliente no asignado"
+                                    }</p>
                                 </div>
 
-                                <StatusBadge status={event.status as "PENDING" | "CONFIRMED" | "FINISHED"} />
+                                <EventStatusSelect status={event.status} onChange={(status) => handleStatusChange(event.id, status)}/>
                             </div>
 
                             <div className="space-y-2 text-sm text-(--text-muted)">
                                 <p className="flex items-center gap-2">
                                     <CalendarDays size={16} />
-                                    {event.date} · {event.time}
+                                    {event.eventDate} · {event.startTime}
                                 </p>
 
                                 <p className="flex items-center gap-2">
                                     <MapPin size={16} />
-                                    {event.location}
+                                    {event.address}
                                 </p>
                             </div>
                             <Link href={routes.clown.editEvent(event.id)} className="mt-4 block w-full rounded-xl border border-(--border) px-3 py-2 text-center text-sm font-semibold text-(--text-soft) transition hover:bg-(--surface-hover)">
