@@ -3,14 +3,29 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { authService } from "@/services/auth.service";
-import { LoginPayload, RegisterPayload } from "@/types/auth.types";
+import { LoginPayload, RegisterPayload, UserRole } from "@/types/auth.types";
 import { routes } from "@/constants/routes";
+import { getRoleFromToken } from "@/utils/jwt";
 
 export function useAuth() {
     const router = useRouter();
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+
+    function redirectByRole(role: UserRole | null) {
+        if (role === "CLOWN") {
+            router.push(routes.clown.dashboard);
+            return;
+        }
+
+        if (role === "CLIENT") {
+            router.push(routes.client.dashboard);
+            return;
+        }
+
+        router.push(routes.home);
+    }
 
     async function login(payload: LoginPayload) {
         try {
@@ -20,7 +35,8 @@ export function useAuth() {
             const data = await authService.login(payload);
             authService.saveSession(data);
 
-            router.push(routes.clown.dashboard);
+            const role = getRoleFromToken(data.token);
+            redirectByRole(role);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Error al iniciar sesión");
         } finally {
@@ -36,7 +52,8 @@ export function useAuth() {
             const data = await authService.register(payload);
             authService.saveSession(data);
 
-            router.push("/");
+            const role = getRoleFromToken(data.token);
+            redirectByRole(role);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Error al registrarse");
         } finally {
@@ -46,7 +63,7 @@ export function useAuth() {
 
     function logout() {
         authService.logout();
-        router.push("/login");
+        router.push(routes.login);
     }
 
     return {

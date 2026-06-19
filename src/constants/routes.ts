@@ -16,11 +16,16 @@ export const routes = {
         newCategory: "/clown/dashboard/services/categories/new",
         editCategory: (categoryId: string) => `/clown/dashboard/services/categories/${categoryId}/edit`,
         profile: "/clown/dashboard/profile",
+        gallery: "/clown/dashboard/gallery",
+        newGallery: "/clown/dashboard/gallery/new",
+        editGallery: (mediaId: string) => `/clown/dashboard/gallery/${mediaId}/edit`,
+        testimonials: "/clown/dashboard/testimonials",
     },
 
     client: {
-        dashboard: "/client/dashboard",
-        reservations: "/client/dashboard/reservations",
-        profile: "/client/dashboard/profile",
-    },
+    dashboard: "/client/dashboard",
+    reservations: "/client/dashboard/reservations",
+    testimonials: "/client/dashboard/testimonials",
+    profile: "/client/dashboard/profile",
+},
 };

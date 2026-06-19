@@ -20,7 +20,7 @@ export default function DashboardHeader() {
                         <Menu size={20} />
                     </button>
 
-                    <button onClick={logout} className="flex items-center gap-2 rounded-xl border border-(--border) px-3 py-2 text-sm text-(--text-soft) transition hover:bg-(--surface-hover)">
+                    <button onClick={logout} className="flex items-center gap-2 rounded-xl border border-(--border) px-3 py-2 text-sm text-(--text-soft) transition hover:bg-(--surface-hover) hover:border-(--primary) hover:text-(--text-main)">
                         <LogOut size={16} />
                         <span className="hidden sm:inline">Salir</span>
                     </button>

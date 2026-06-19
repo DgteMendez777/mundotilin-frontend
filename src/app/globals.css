@@ -39,3 +39,19 @@ input,
 button {
   font-family: inherit;
 }
+
+/* small helpers used by Loading component */
+.text-primary {
+  color: var(--primary);
+}
+
+.bg-primary-soft {
+  background: var(--primary-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin,
+  .animate-pulse {
+    animation: none !important;
+  }
+}
