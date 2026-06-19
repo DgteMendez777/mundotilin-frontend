@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, Home, LayoutGrid, PartyPopper, User } from "lucide-react";
+import { CalendarDays, Home, ImageIcon, PartyPopper, User, MessageSquareHeart } from "lucide-react";
 import { routes } from "@/constants/routes";
 import Image from "next/image";
 
@@ -23,15 +23,21 @@ const navItems = [
         icon: PartyPopper,
     },
     {
-        label: "Categorías",
-        href: routes.clown.categories,
-        icon: LayoutGrid,
-    },
+    label: "Galería",
+    href: routes.clown.gallery,
+    icon: ImageIcon,
+},
+{
+  label: "Testimonios",
+  href: routes.clown.testimonials,
+  icon: MessageSquareHeart,
+},
     {
         label: "Perfil",
         href: routes.clown.profile,
         icon: User,
     },
+    
 ]
 
 export default function DashboardSidebar () {

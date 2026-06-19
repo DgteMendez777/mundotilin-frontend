@@ -9,6 +9,8 @@ import GallerySection from "@/components/landing/GallerySection";
 import ContactSection from "@/components/landing/ContactSection";
 import LandingFooter from "@/components/landing/LandingFooter";
 import AboutSection from "@/components/landing/AboutSection";
+import TestimonialsSection from "@/components/landing/TestimonialsSection";
+import YouTubeVideosSection from "@/components/landing/YouTubeVideosSection";
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,6 +29,8 @@ export default function HomePage() {
     <ServicesPreview />
     <AboutSection />
     <GallerySection />
+    <YouTubeVideosSection />
+    <TestimonialsSection />
     <ContactSection />
     <LandingFooter />
       </main>
