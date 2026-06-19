@@ -1,5 +1,9 @@
 import { apiFetch } from "./api";
-import { UploadTestimonialResponse } from "@/types/uploads.types";
+
+type UploadServiceResponse = {
+  url: string;
+  publicId: string;
+};
 
 type UploadGalleryResponse = {
   url: string;
@@ -7,7 +11,22 @@ type UploadGalleryResponse = {
   type: "IMAGE" | "VIDEO";
 };
 
+type UploadTestimonialResponse = {
+  url: string;
+  publicId: string;
+};
+
 export const uploadsService = {
+  uploadServiceImage(file: File) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    return apiFetch<UploadServiceResponse>("/uploads/service-image", {
+      method: "POST",
+      body: formData,
+    });
+  },
+
   uploadGalleryImage(file: File) {
     const formData = new FormData();
     formData.append("file", file);
@@ -29,12 +48,12 @@ export const uploadsService = {
   },
 
   uploadTestimonialImage(file: File) {
-  const formData = new FormData();
-  formData.append("file", file);
+    const formData = new FormData();
+    formData.append("file", file);
 
-  return apiFetch<UploadTestimonialResponse>("/uploads/testimonial-image", {
-    method: "POST",
-    body: formData,
-  });
-},
+    return apiFetch<UploadTestimonialResponse>("/uploads/testimonial-image", {
+      method: "POST",
+      body: formData,
+    });
+  },
 };
