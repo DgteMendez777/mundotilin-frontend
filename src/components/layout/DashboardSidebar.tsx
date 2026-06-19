@@ -64,17 +64,15 @@ export default function DashboardSidebar () {
                     const Icon = item.icon;
                     const isActive = pathname === item.href;
 
-                    return (
-                        <Link key={item.href} href={item.href} className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition ${
-                            isActive
-                                ? "bg-(--primary-soft) text-(--primary)"
-                                : "text-(--text-muted) hover:bg-(--surface-hover) hover:text-(--text-main)"
-                            }`}
-                        >
-                            <Icon size={18} />
-                            {item.label}
-                        </Link>
-                    );
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition ${isActive ? "bg-[var(--surface-hover)] border-l-4 border-[var(--primary)] text-white" : "text-[var(--text-soft)] hover:bg-[var(--surface-hover)]"}`}>
+                                <Icon size={16} />
+                                <span className="truncate">{item.label}</span>
+                            </Link>
+                        );
                 })}
             </nav>
         </aside>

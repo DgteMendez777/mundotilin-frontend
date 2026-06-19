@@ -5,6 +5,7 @@ import Link from "next/link";
 import { routes } from "@/constants/routes";
 import { Home, PartyPopper, BookImage, Phone, LogIn, UserPlus, Sparkles, Info } from "lucide-react";
 import Image from "next/image";
+import SocialLinks from "./SocialLinks";
 
 const navItems = [
     { label: "Inicio", href: "#inicio", id: "inicio", icon: Home },
@@ -94,6 +95,9 @@ export default function LandingHeader() {
                 </nav>
 
                 <div className="flex items-center gap-2">
+                    <div className="hidden sm:block">
+                        <SocialLinks />
+                    </div>
                     <Link
                         href={routes.login}
                         className="flex rounded-2xl border border-(--border) p-2 text-sm font-semibold text-(--text-soft) transition hover:bg-(--surface-hover) sm:px-4 sm:py-2"

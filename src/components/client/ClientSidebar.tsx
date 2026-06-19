@@ -33,10 +33,10 @@ export default function ClientSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-(--border) bg-(--surface) px-5 py-6 lg:block">
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-[var(--border)] bg-[var(--surface)] px-5 py-6 lg:block">
       <div className="mb-8 flex items-center gap-3">
         <Image
-          src="/images/branding/logo-mundotilin.png"
+          src="/images/landing/og-image.png"
           alt="Mundo Tilín"
           width={56}
           height={56}
@@ -45,7 +45,7 @@ export default function ClientSidebar() {
 
         <div>
           <h2 className="font-black leading-tight">Mundo Tilín</h2>
-          <p className="text-xs text-(--text-muted)">Panel del cliente</p>
+          <p className="text-xs text-[var(--text-muted)]">Panel del cliente</p>
         </div>
       </div>
 
@@ -58,14 +58,14 @@ export default function ClientSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition ${
+              className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition ${
                 isActive
-                  ? "bg-(--primary-soft) text-(--primary)"
-                  : "text-(--text-muted) hover:bg-(--surface-hover) hover:text-(--text-main)"
+                  ? "bg-[var(--surface-hover)] border-l-4 border-[var(--primary)] text-white"
+                  : "text-[var(--text-soft)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-main)]"
               }`}
             >
               <Icon size={18} />
-              {item.label}
+              <span className="truncate">{item.label}</span>
             </Link>
           );
         })}

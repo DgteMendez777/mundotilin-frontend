@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Toast from "@/components/ui/Toast";
@@ -14,6 +14,7 @@ export default function ClientTestimonialsPage() {
   const [eventType, setEventType] = useState("");
   const [rating, setRating] = useState(5);
   const [image, setImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const { toast, showToast, hideToast } = useToast();
@@ -38,15 +39,16 @@ export default function ClientTestimonialsPage() {
         imageUrl,
       });
 
-      setClientName("");
-      setComment("");
-      setEventType("");
-      setRating(5);
-      setImage(null);
+  setClientName("");
+  setComment("");
+  setEventType("");
+  setRating(5);
+  setImage(null);
+  setPreviewUrl(null);
 
-      showToast("success", "Testimonio enviado correctamente.");
+  showToast("success", "Testimonio enviado correctamente.");
     } catch {
-      showToast("error", "No se pudo enviar el testimonio.");
+        showToast("error", "No se pudo enviar el testimonio.");
     } finally {
       setIsLoading(false);
     }
@@ -134,9 +136,24 @@ export default function ClientTestimonialsPage() {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setImage(e.target.files?.[0] ?? null)}
+            onChange={(e) => {
+              const file = e.target.files?.[0] ?? null;
+              setImage(file);
+              if (file) {
+                const url = URL.createObjectURL(file);
+                setPreviewUrl(url);
+              } else {
+                setPreviewUrl(null);
+              }
+            }}
             className="w-full rounded-xl border border-(--border) bg-[#0a0e14] px-4 py-3 text-sm text-(--text-muted)"
           />
+
+          {previewUrl && (
+            <div className="mt-3">
+              <img src={previewUrl} alt="Vista previa" className="h-28 w-28 rounded object-cover" />
+            </div>
+          )}
         </div>
 
         <Button type="submit" className="w-full" disabled={isLoading}>
