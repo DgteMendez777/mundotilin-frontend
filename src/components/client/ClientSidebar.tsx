@@ -5,6 +5,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Home, MessageSquareHeart, User, CalendarDays } from "lucide-react";
 import { routes } from "@/constants/routes";
+import { LogOut, Menu } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
   {
@@ -31,6 +33,7 @@ const navItems = [
 
 export default function ClientSidebar() {
   const pathname = usePathname();
+  const { logout } = useAuth();
 
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-[var(--border)] bg-[var(--surface)] px-5 py-6 lg:block">
@@ -70,6 +73,10 @@ export default function ClientSidebar() {
           );
         })}
       </nav>
+      <button onClick={logout} className="flex items-center gap-2 rounded-xl border border-(--border) px-3 py-2 text-sm text-(--text-soft) transition hover:bg-(--surface-hover) hover:border-(--primary) hover:text-(--text-main)">
+                        <LogOut size={16} />
+                        <span className="hidden sm:inline">Salir</span>
+                    </button>
     </aside>
   );
 }

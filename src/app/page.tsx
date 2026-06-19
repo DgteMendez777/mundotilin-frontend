@@ -11,6 +11,7 @@ import LandingFooter from "@/components/landing/LandingFooter";
 import AboutSection from "@/components/landing/AboutSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import YouTubeVideosSection from "@/components/landing/YouTubeVideosSection";
+import FloatingWhatsApp from "@/components/common/FloatingWhatsApp";
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +34,7 @@ export default function HomePage() {
     <TestimonialsSection />
     <ContactSection />
     <LandingFooter />
+    <FloatingWhatsApp />
       </main>
     </>
   );

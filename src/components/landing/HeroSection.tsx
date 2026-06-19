@@ -5,24 +5,29 @@ import Image from "next/image";
 import { ArrowRight, CalendarDays, Sparkles, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import { publicService, PublicStats } from "@/services/public.service";
+import WhatsAppButton from "@/components/common/WhatsAppButton";
 
 export default function HeroSection() {
   const [stats, setStats] = useState<PublicStats | null>(null);
 
-useEffect(() => {
-  async function loadStats() {
-    try {
-      const data = await publicService.getStats();
-      setStats(data);
-    } catch (error) {
-      console.error("Error cargando estadísticas:", error);
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const data = await publicService.getStats();
+        setStats(data);
+      } catch (error) {
+        console.error("Error cargando estadísticas:", error);
+      }
     }
-  }
 
-  loadStats();
-}, []);
+    loadStats();
+  }, []);
+
   return (
-    <section id="inicio" className="scroll-mt-24 relative overflow-hidden px-5 pt-28 pb-16 sm:px-8 lg:px-16 lg:pt-32">
+    <section
+      id="inicio"
+      className="scroll-mt-24 relative overflow-hidden px-5 pt-28 pb-16 sm:px-8 lg:px-16 lg:pt-32"
+    >
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.22),transparent_35%),radial-gradient(circle_at_top_left,rgba(168,85,247,0.14),transparent_30%)]" />
 
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1fr_0.9fr]">
@@ -49,7 +54,10 @@ useEffect(() => {
               className="group inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] bg-[var(--primary)] px-6 py-3 font-semibold text-white transition hover:bg-[var(--primary-hover)] hover:shadow-lg hover:shadow-purple-950/40"
             >
               Ver servicios
-              <ArrowRight size={18} className="transition group-hover:translate-x-1" />
+              <ArrowRight
+                size={18}
+                className="transition group-hover:translate-x-1"
+              />
             </Link>
 
             <Link
@@ -59,30 +67,35 @@ useEffect(() => {
               <CalendarDays size={18} />
               Cotizar evento
             </Link>
+
+            <WhatsAppButton
+              message="Hola MundoTilín, quisiera consultar disponibilidad para un evento."
+              label="WhatsApp"
+            />
           </div>
 
           <div className="mt-10 grid max-w-xl grid-cols-3 gap-3">
-  <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-4">
-    <p className="text-2xl font-black text-white">
-      +{stats?.completedEventsCount ?? 0}
-    </p>
-    <p className="mt-1 text-sm text-[var(--text-muted)]">eventos</p>
-  </div>
+            <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-4">
+              <p className="text-2xl font-black text-white">
+                +{stats?.completedEventsCount ?? 0}
+              </p>
+              <p className="mt-1 text-sm text-[var(--text-muted)]">eventos</p>
+            </div>
 
-  <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-4">
-    <p className="text-2xl font-black text-white">
-      +{stats?.experienceYears ?? 0}
-    </p>
-    <p className="mt-1 text-sm text-[var(--text-muted)]">años</p>
-  </div>
+            <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-4">
+              <p className="text-2xl font-black text-white">
+                +{stats?.experienceYears ?? 0}
+              </p>
+              <p className="mt-1 text-sm text-[var(--text-muted)]">años</p>
+            </div>
 
-  <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-4">
-    <p className="text-2xl font-black text-white">
-      +{stats?.servicesCount ?? 0}
-    </p>
-    <p className="mt-1 text-sm text-[var(--text-muted)]">servicios</p>
-  </div>
-</div>
+            <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-4">
+              <p className="text-2xl font-black text-white">
+                +{stats?.servicesCount ?? 0}
+              </p>
+              <p className="mt-1 text-sm text-[var(--text-muted)]">servicios</p>
+            </div>
+          </div>
         </div>
 
         <div className="relative">
