@@ -1,58 +1,102 @@
-import { PartyPopper, WandSparkles, Music } from "lucide-react";
+"use client";
 
-const services = [
-	{
-		id: "show-infantil",
-		title: "Show infantil",
-		description: "Juegos, dinámicas y animación para cumpleaños.",
-		icon: PartyPopper,
-	},
-	{
-		id: "magia-globos",
-		title: "Magia y globos",
-		description: "Momentos visuales y divertidos para sorprender a los niños.",
-		icon: WandSparkles,
-	},
-	{
-		id: "eventos-familiares",
-		title: "Eventos familiares",
-		description: "Animación adaptable para reuniones, colegios y celebraciones.",
-		icon: Music,
-	},
-];
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { PartyPopper } from "lucide-react";
+import { publicService } from "@/services/public.service";
+import { Service } from "@/types/service.types";
 
 export default function ServicesPreview() {
-	return (
-		<section id="servicios" className="px-4 py-16 sm:px-6 lg:px-8">
-			<div className="mx-auto max-w-7xl">
-				<div>
-					<h2 className="text-3xl font-black">Servicios destacados</h2>
-					<p className="mt-2 text-sm text-[var(--text-muted)]">Paquetes pensados para diferentes tipos de eventos.</p>
-				</div>
+  const [services, setServices] = useState<Service[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-				<div className="mt-8 grid gap-5 md:grid-cols-3">
-					{services.map((s) => {
-						const Icon = s.icon;
+  useEffect(() => {
+    async function loadServices() {
+      try {
+        const data = await publicService.getFeaturedServices();
+setServices(data.slice(0, 4));
+      } catch (error) {
+        console.error("Error cargando servicios:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-						return (
-							<article key={s.id} className="rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] p-6">
-								<div className="mb-4 h-40 w-full rounded-md bg-white/6 flex items-center justify-center text-[var(--text-muted)]">
-									{/* Placeholder for service image - connect to backend later */}
-									<span>Imagen del servicio</span>
-								</div>
+    loadServices();
+  }, []);
 
-								<div className="flex items-center gap-4">
-									<Icon size={28} className="text-[var(--primary)]" />
-									<h3 className="text-lg font-bold">{s.title}</h3>
-								</div>
+  return (
+    <section id="servicios" className="scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div>
+          <h2 className="text-3xl font-black">Servicios destacados</h2>
+          <p className="mt-2 text-sm text-[var(--text-muted)]">
+            Paquetes pensados para diferentes tipos de eventos.
+          </p>
+        </div>
 
-								<p className="mt-3 text-sm text-[var(--text-muted)]">{s.description}</p>
-							</article>
-						);
-					})}
-				</div>
-			</div>
-		</section>
-	);
+        {isLoading ? (
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {[1, 2, 3].map((item) => (
+              <div
+                key={item}
+                className="h-80 animate-pulse rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)]"
+              />
+            ))}
+          </div>
+        ) : services.length === 0 ? (
+          <div className="mt-8 rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] p-6 text-sm text-[var(--text-muted)]">
+            No hay servicios activos disponibles por el momento.
+          </div>
+        ) : (
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {services.map((service) => (
+              <article
+                key={service.id}
+                className="group overflow-hidden rounded-[var(--radius-xl)] border border-[var(--border)] bg-[var(--surface)] transition hover:-translate-y-1 hover:border-[var(--primary)] hover:bg-[var(--surface-hover)]"
+              >
+                <div className="relative h-44 w-full overflow-hidden bg-[var(--surface-soft)]">
+                  {service.coverImage ? (
+                    <Image
+                      src={service.coverImage}
+                      alt={service.name}
+                      fill
+                      className="object-cover transition duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-[var(--primary)]">
+                      <PartyPopper size={42} />
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-5">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[var(--primary)]">
+                    {service.category?.name || "Servicio"}
+                  </p>
+
+                  <h3 className="mt-2 line-clamp-2 text-lg font-bold">
+                    {service.name}
+                  </h3>
+
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-[var(--text-muted)]">
+                    {service.description}
+                  </p>
+
+                  <div className="mt-5 flex items-center justify-between">
+                    <span className="text-sm text-[var(--text-muted)]">
+                      Desde
+                    </span>
+                    <span className="text-lg font-black text-[var(--primary)]">
+                      Bs {service.basePrice}
+                    </span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
 }
-
