@@ -56,4 +56,14 @@ export const uploadsService = {
       body: formData,
     });
   },
+
+  uploadPaymentProof(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  return apiFetch<{ url: string; publicId: string }>("/uploads/payment-proof", {
+    method: "POST",
+    body: formData,
+  });
+},
 };

@@ -5,6 +5,9 @@ import Image from "next/image";
 import { PartyPopper } from "lucide-react";
 import { publicService } from "@/services/public.service";
 import { Service } from "@/types/service.types";
+import WhatsAppButton from "@/components/common/WhatsAppButton";
+import Link from "next/link";
+import { routes } from "@/constants/routes";
 
 export default function ServicesPreview() {
   const [services, setServices] = useState<Service[]>([]);
@@ -14,7 +17,7 @@ export default function ServicesPreview() {
     async function loadServices() {
       try {
         const data = await publicService.getFeaturedServices();
-setServices(data.slice(0, 4));
+        setServices(data.slice(0, 4));
       } catch (error) {
         console.error("Error cargando servicios:", error);
       } finally {
@@ -26,7 +29,10 @@ setServices(data.slice(0, 4));
   }, []);
 
   return (
-    <section id="servicios" className="scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8">
+    <section
+      id="servicios"
+      className="scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8"
+    >
       <div className="mx-auto max-w-7xl">
         <div>
           <h2 className="text-3xl font-black">Servicios destacados</h2>
@@ -61,6 +67,7 @@ setServices(data.slice(0, 4));
                       src={service.coverImage}
                       alt={service.name}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       className="object-cover transition duration-300 group-hover:scale-105"
                     />
                   ) : (
@@ -90,6 +97,22 @@ setServices(data.slice(0, 4));
                     <span className="text-lg font-black text-[var(--primary)]">
                       Bs {service.basePrice}
                     </span>
+                  </div>
+
+                  <div className="mt-5">
+                    
+                    <WhatsAppButton
+                      message={`Hola MundoTilín, estoy interesado en el servicio ${service.name}.`}
+                      label="Consultar"
+                      className="w-full"
+                    />
+
+                    <Link
+  href={routes.client.newReservation(service.id)}
+  className="mt-5 block rounded-xl bg-[var(--primary)] px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-[var(--primary-hover)]"
+>
+  Reservar servicio
+</Link>
                   </div>
                 </div>
               </article>

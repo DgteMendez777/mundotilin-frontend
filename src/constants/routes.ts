@@ -20,12 +20,16 @@ export const routes = {
         newGallery: "/clown/dashboard/gallery/new",
         editGallery: (mediaId: string) => `/clown/dashboard/gallery/${mediaId}/edit`,
         testimonials: "/clown/dashboard/testimonials",
+        
     },
 
     client: {
-    dashboard: "/client/dashboard",
-    reservations: "/client/dashboard/reservations",
-    testimonials: "/client/dashboard/testimonials",
-    profile: "/client/dashboard/profile",
+  dashboard: "/client/dashboard",
+  reservations: "/client/dashboard/reservations",
+  newReservation: (serviceId: string) =>
+  `/client/dashboard/reservations/new/${serviceId}`,
+  payments: "/client/dashboard/payments",
+  testimonials: "/client/dashboard/testimonials",
+  profile: "/client/dashboard/profile",
 },
 };
